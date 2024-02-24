@@ -43,5 +43,14 @@ void PhysManager::Update(float dt) {
 
 void PhysManager::Draw(Render* render) {
     for(auto &obj: objs)
-	obj.Draw(render);
+	obj.Draw3D(render);
+    for(auto &obj: objs)
+    	obj.Draw2D(render);
+}
+
+
+glm::vec3 PhysManager::getPos(int id) {
+    if(id >= objs.size())
+	return glm::vec3(0);
+    return objs[id].getPos();
 }

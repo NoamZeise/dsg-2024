@@ -10,6 +10,8 @@ class PhysManager {
     void Update(float dt);
     void Draw(Render* render);
     void Add(PhysObj obj);
+
+    glm::vec3 getPos(int id);
  private:
     std::vector<PhysObj> objs;
     float G = 0.00001;

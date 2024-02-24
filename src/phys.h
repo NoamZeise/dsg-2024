@@ -3,9 +3,10 @@
 
 #include "obj.h"
 
-class PhysObj : public Obj {
+class PhysObj : public Obj2D, public Obj3D {
  public:
     PhysObj(Resource::Texture tex,
+	    Resource::Model model,
 	    glm::vec3 pos,
 	    float radius);
     void addAccel(glm::vec3 accel);
@@ -27,8 +28,8 @@ class PhysObj : public Obj {
     glm::vec3 bonusVel = glm::vec3(0);
     glm::vec3 pos = glm::vec3(0);
     glm::vec3 bonusPos = glm::vec3(0);
-    float radius;
     float weight = 1.0f;
+    float radius;
 };
 
 
