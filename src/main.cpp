@@ -76,11 +76,12 @@ int main(int argc, char** argv) {
 	    if(!won && game.isLevelDone() &&
 	       (manager.input.c.press(0, GLFW_GAMEPAD_BUTTON_A)) ||
 	       manager.input.kb.press(GLFW_KEY_ENTER)) {
-		game.Reset();
+		game.NextLevel();
 	    }
 	}
 	
-	if(manager.input.kb.press(GLFW_KEY_F))
+	if(manager.input.kb.press(GLFW_KEY_F) ||
+	   manager.input.c.press(0, GLFW_GAMEPAD_BUTTON_BACK))
 	    manager.toggleFullscreen();
 	
 	if(manager.winActive()) {
