@@ -5,8 +5,10 @@
 
 class PhysObj : public Obj2D, public Obj3D {
  public:
+    PhysObj(){}
     PhysObj(Resource::Texture tex,
 	    Resource::Model model,
+	    Resource::Texture modelTex,
 	    glm::vec3 pos,
 	    float radius);
     void addAccel(glm::vec3 accel);
@@ -19,7 +21,7 @@ class PhysObj : public Obj2D, public Obj3D {
     void Update(float dt);
     
     glm::vec3 getPos() { return pos; }
-    float getSize() { return radius*radius*weight; }
+    float getMass() { return radius*radius*weight; }
     float getRadius() { return radius; }
     glm::vec3 getVel() { return velocity; }
  private:

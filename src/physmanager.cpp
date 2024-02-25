@@ -8,17 +8,27 @@ void PhysManager::Add(PhysObj obj) {
 }
 
 void PhysManager::Update(float dt) {
+    float nearestToPlayer = 0;
     for(int i = 0; i < objs.size(); i++) {
 	for(int j = i + 1; j < objs.size(); j++) {
 	    glm::vec3 d = objs[i].getPos() - objs[j].getPos();
 	    float r = glm::dot(d, d);
-	    float m1 = objs[i].getSize();
-	    float m2 = objs[j].getSize();
+	    float m1 = objs[i].getMass();
+	    float m2 = objs[j].getMass();
 	    objs[i].addAccel((G*m2/r)*(-d));
 	    objs[j].addAccel((G*m1/r)*( d));
 	    
 	    float min = objs[i].getRadius() + objs[j].getRadius();
 	    float diff2 = min*min  - r;
+
+	    if(i == 0) {
+		if(nearestToPlayer == 0 ||
+		   nearestToPlayer > r) {
+		    nearest = &objs[j];
+		    nearestToPlayer = r;
+		}		
+	    }
+	    
 	    if(diff2 > 0) {
 		float diff = glm::length(d);
 		float x = min - diff;
@@ -49,8 +59,8 @@ void PhysManager::Draw(Render* render) {
 }
 
 
-glm::vec3 PhysManager::getPos(int id) {
-    if(id >= objs.size())
-	return glm::vec3(0);
-    return objs[id].getPos();
+PhysObj* PhysManager::getObj(int id) {
+    if(id >= objs.size() || id < 0)
+	return nullptr;
+    return &objs[id];
 }

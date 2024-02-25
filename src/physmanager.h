@@ -11,9 +11,14 @@ class PhysManager {
     void Draw(Render* render);
     void Add(PhysObj obj);
 
-    glm::vec3 getPos(int id);
+    PhysObj* getObj(int id);
+    PhysObj* nearestObj() {
+	return nearest;
+    }
+    int Count() { return objs.size(); }
  private:
     std::vector<PhysObj> objs;
+    PhysObj* nearest = nullptr;
     float G = 0.00001;
 };
 

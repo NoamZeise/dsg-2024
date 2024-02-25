@@ -2,8 +2,9 @@
 
 PhysObj::PhysObj(Resource::Texture tex,
 		 Resource::Model model,
+		 Resource::Texture modelTex,
 		 glm::vec3 pos,
-		 float radius) : Obj2D(tex), Obj3D(model) {
+		 float radius) : Obj2D(tex), Obj3D(model, modelTex) {
     this->radius = radius;
     this->pos = pos;
 }

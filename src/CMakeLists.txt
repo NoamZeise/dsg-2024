@@ -3,6 +3,8 @@ add_executable(dsg-2024
   obj.cpp
   phys.cpp
   physmanager.cpp
+  cursor.cpp
+  game.cpp
 )
 target_link_libraries(dsg-2024 GraphicsEnv)
 
