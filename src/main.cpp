@@ -65,14 +65,17 @@ int main(int argc, char** argv) {
 	    cursor.Update(manager.input);
 
 	    view2D = game.Update(dt, manager.input, cam);
-	    if(won && manager.input.c.press(0, GLFW_GAMEPAD_BUTTON_A)) {
+	    if(won &&
+	       (manager.input.c.press(0, GLFW_GAMEPAD_BUTTON_A))) {
 		won = false;
 		game.Reset();
 	    }
-	    if(game.gameFinished()) {
+	    else if(game.gameFinished()) {
 		won = true;
 	    }
-	    if(!won && game.isLevelDone() && manager.input.c.press(0, GLFW_GAMEPAD_BUTTON_A)) {
+	    if(!won && game.isLevelDone() &&
+	       (manager.input.c.press(0, GLFW_GAMEPAD_BUTTON_A)) ||
+	       manager.input.kb.press(GLFW_KEY_ENTER)) {
 		game.Reset();
 	    }
 	}
