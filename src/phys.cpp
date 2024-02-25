@@ -16,7 +16,7 @@ void PhysObj::addAccel(glm::vec3 accel) {
 void PhysObj::Update(float dt) {
     velocity += dt*accel + bonusVel;
     bonusVel = glm::vec3(0);
-    pos += dt*velocity + bonusPos;
+    pos += (dt*velocity) + bonusPos;
     bonusPos = glm::vec3(0);
     this->accel = glm::vec3(0);
     Obj2D::Update(

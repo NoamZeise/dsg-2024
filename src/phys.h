@@ -24,6 +24,9 @@ class PhysObj : public Obj2D, public Obj3D {
     float getMass() { return radius*radius*weight; }
     float getRadius() { return radius; }
     glm::vec3 getVel() { return velocity; }
+    void setWeight(float weight) {
+	this->weight = weight;
+    }
  private:
     glm::vec3 accel = glm::vec3(0);
     glm::vec3 velocity = glm::vec3(0);

@@ -16,10 +16,16 @@ class PhysManager {
 	return nearest;
     }
     int Count() { return objs.size(); }
+    void clear() { objs.clear(); }
+
+    bool playerTouchedGoal() {
+	return touchedGoal;
+    }
  private:
     std::vector<PhysObj> objs;
     PhysObj* nearest = nullptr;
     float G = 0.00001;
+    bool touchedGoal = false;
 };
 
 #endif /* PHYSMANAGER_H */

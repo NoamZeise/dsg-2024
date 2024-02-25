@@ -11,9 +11,7 @@ void Obj2D::Update(glm::vec4 rect) {
     mat = glmhelper::calcMatFromRect(rect, 0, 0.5f);
 }
 
-void Obj2D::Draw2D(Render* render) {
-    render->DrawQuad(tex, mat, colour);
-}
+void Obj2D::Draw2D(Render *render) { render->DrawQuad(tex, mat, colour); }
 
 Obj3D::Obj3D(Resource::Model model, Resource::Texture tex) {
     this->model = model;

@@ -1,0 +1,2 @@
+planets on each row:
+x y z radius v0.x v0.y v0.z
