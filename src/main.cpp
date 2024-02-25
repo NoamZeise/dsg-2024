@@ -42,9 +42,6 @@ int main(int argc, char** argv) {
 
     Game game(pool);
 
-    auto cursor = Cursor(pool->tex()->load("textures/circle.png"),
-			 glm::vec2(RENDER_WIDTH, RENDER_HEIGHT));
-
     Resource::Texture winScreen = pool->tex()->load("textures/victory.png");
     Resource::Texture nextLvl = pool->tex()->load("textures/next-level.png");
     
@@ -62,11 +59,11 @@ int main(int argc, char** argv) {
 	
 	float dt = manager.timer.dt();	
 	if(dt < 100) {
-	    cursor.Update(manager.input);
 
 	    view2D = game.Update(dt, manager.input, cam);
 	    if(won &&
-	       (manager.input.c.press(0, GLFW_GAMEPAD_BUTTON_A))) {
+	       (manager.input.c.press(0, GLFW_GAMEPAD_BUTTON_A) ||
+		manager.input.kb.press(GLFW_KEY_SPACE))) {
 		won = false;
 		game.Reset();
 	    }
@@ -74,8 +71,8 @@ int main(int argc, char** argv) {
 		won = true;
 	    }
 	    if(!won && game.isLevelDone() &&
-	       (manager.input.c.press(0, GLFW_GAMEPAD_BUTTON_A)) ||
-	       manager.input.kb.press(GLFW_KEY_ENTER)) {
+	       (manager.input.c.press(0, GLFW_GAMEPAD_BUTTON_A) ||
+		manager.input.kb.press(GLFW_KEY_SPACE))) {
 		game.NextLevel();
 	    }
 	}
@@ -96,7 +93,6 @@ int main(int argc, char** argv) {
 	    if(game.isLevelDone()) {
                 manager.render->DrawQuad(nextLvl,					 glm::inverse(view2D)*glmhelper::calcMatFromRect(glm::vec4(0, 0, RENDER_WIDTH, RENDER_HEIGHT), 0, 1.5f)                    );
 	    }
-	    //cursor.Draw2D(manager.render);
 	    
 	    manager.render->EndDraw();
 	}

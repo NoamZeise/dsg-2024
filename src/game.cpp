@@ -45,37 +45,43 @@ Game::Game(ResourcePool* pool) {
 glm::mat4 Game::Update(float dt, Input &input, camera::ThirdPerson &cam) {
     bool pressedA = false;
     if(!isFinished && !levelDone) {
-    if(start && input.c.press(0, GLFW_GAMEPAD_BUTTON_A) ||
-       input.kb.press(GLFW_KEY_ENTER)) {
-	loadLevel(currentLevel);
-	pressedA = true;
-    }
-    if(input.c.press(0, GLFW_GAMEPAD_BUTTON_DPAD_DOWN)) {
-	randomMode = !randomMode;
-	NextLevel();
-    }
-    if(pm.playerTouchedGoal()) {
-	levelDone = true;
-    }
-    if(input.c.press(0, GLFW_GAMEPAD_BUTTON_DPAD_RIGHT)) {
-	NextLevel();
-    }
-    if(input.c.press(0, GLFW_GAMEPAD_BUTTON_DPAD_LEFT)) {
-	currentLevelNum -= 2;
-	if(currentLevelNum < -1)
-	    currentLevelNum = -1;
-	nextLevel();
-    }
+	if(start && (input.c.press(0, GLFW_GAMEPAD_BUTTON_A) ||
+		     input.kb.press(GLFW_KEY_SPACE))) {
+	    loadLevel(currentLevel);
+	    pressedA = true;
+	}
+	if(input.c.press(0, GLFW_GAMEPAD_BUTTON_DPAD_DOWN) ||
+	   input.kb.press(GLFW_KEY_DOWN)) {
+	    randomMode = !randomMode;
+	    NextLevel();
+	}
+	if(pm.playerTouchedGoal()) {
+	    levelDone = true;
+	}
+	if(input.c.press(0, GLFW_GAMEPAD_BUTTON_DPAD_RIGHT) ||
+	   input.kb.press(GLFW_KEY_RIGHT)) {
+	    NextLevel();
+	}
+	if(input.c.press(0, GLFW_GAMEPAD_BUTTON_DPAD_LEFT) ||
+	   input.kb.press(GLFW_KEY_LEFT)) {
+	    if(!randomMode) {
+		currentLevelNum -= 2;
+		if(currentLevelNum < -1)
+		    currentLevelNum = -1;
+	    }
+	    NextLevel();
+	}
     
 
-    if(start) {
-	pm.Update(dt);
-    } else if(!pressedA){
-	golfUpdate(input, dt);
+	if(start) {
+	    pm.Update(dt);
+	} else if(!pressedA){
+	    golfUpdate(input, dt);
+	}
     }
-    }
-    camUpdate(dt, input, cam);
 
+    camUpdate(dt, input, cam);
+    
     if(start && !isFinished) {
 	glm::vec3 controller = glm::vec3(input.c.axis(0, GLFW_GAMEPAD_AXIS_LEFT_X),
 					 input.c.axis(0, GLFW_GAMEPAD_AXIS_LEFT_Y),
@@ -103,9 +109,9 @@ glm::mat4 Game::Update(float dt, Input &input, camera::ThirdPerson &cam) {
 
 void Game::camUpdate(float dt, Input &input, camera::ThirdPerson &cam) {
     int lt = target;
-    if(input.kb.press(GLFW_KEY_COMMA) || input.c.press(0, GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER))
+    if(input.kb.press(GLFW_KEY_Q) || input.c.press(0, GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER))
 	target++;
-    if(input.kb.press(GLFW_KEY_PERIOD) || input.c.press(0, GLFW_GAMEPAD_BUTTON_LEFT_BUMPER))
+    if(input.kb.press(GLFW_KEY_E) || input.c.press(0, GLFW_GAMEPAD_BUTTON_LEFT_BUMPER))
 	target--;
 
     
@@ -124,6 +130,7 @@ void Game::camUpdate(float dt, Input &input, camera::ThirdPerson &cam) {
 		  input.m.dy());
 
     glm::vec2 arrows(0);
+    /*
     if(input.kb.hold(GLFW_KEY_RIGHT))
 	arrows.x += 1;
     if(input.kb.hold(GLFW_KEY_LEFT))
@@ -131,7 +138,7 @@ void Game::camUpdate(float dt, Input &input, camera::ThirdPerson &cam) {
     if(input.kb.hold(GLFW_KEY_UP))
 	arrows.y -= 1;
     if(input.kb.hold(GLFW_KEY_DOWN))
-	arrows.y += 1;
+    arrows.y += 1;*/
 
     glm::vec2 controller = glm::vec2(input.c.axis(0, GLFW_GAMEPAD_AXIS_RIGHT_X),
 				     input.c.axis(0, GLFW_GAMEPAD_AXIS_RIGHT_Y));
@@ -156,7 +163,7 @@ void Game::camUpdate(float dt, Input &input, camera::ThirdPerson &cam) {
 	    pDir = t->getPos() - pm.getObj(playerID)->getPos();
 	pDir += glm::vec3(0, 0, 0.4)*glm::length(pDir);
 	glm::vec3 c = cam.getForward();
-	float diff = 0.00006f*dt;
+	float diff = 0.00005f*dt;
 	    
 	if(changedTarget)
 	    cam.setForward(pDir);
@@ -180,15 +187,15 @@ void Game::golfUpdate(Input &input, float dt) {
 	dir.y += 1;
     if(input.kb.hold(GLFW_KEY_D))
 	dir.x += 1;
-
+    
     glm::vec2 controller = glm::vec2(input.c.axis(0, GLFW_GAMEPAD_AXIS_LEFT_X),
 				     input.c.axis(0, GLFW_GAMEPAD_AXIS_LEFT_Y));
 
-    if(fabs(controller.x) > 0 || fabs(controller.y) > 0) {
+    if(fabs(controller.x) > 0.05 || fabs(controller.y) > 0.05) {
 	controller *= STRIKE_LIMIT;
 	strikeDir = glm::vec3(controller.x, controller.y, 0);
     }
-    else if(dir != glm::vec3(0)) {	
+    if(dir != glm::vec3(0)) {	
 	strikeDir += dir * dt;
 	float l = glm::length(strikeDir);
 	if(l > STRIKE_LIMIT)
